@@ -6,7 +6,6 @@ from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 from datetime import datetime
 import io
-
 # --- ADICIONADO PARA O WEBOOK ---
 from flask import Flask, request, jsonify 
 app = Flask(__name__)
@@ -34,7 +33,7 @@ SMTP_PASS = "jszs tkzf nxgt napg"
 RECIPIENT_EMAIL = "luissilva@madeiranit.com.br"
 EMAIL_SENDER = "luissilva@madeiranit.com.br"
 
-# --- 2. FUNÇÕES DE ACESSO À API E PROCESSAMENTO ---
+# --- 2. FUNÇÕES DE ACESSO À API E PROCESSAMENTO --
 
 def fetch_all_paginated_data(endpoint: str) -> list:
     all_data = []
@@ -49,7 +48,7 @@ def fetch_all_paginated_data(endpoint: str) -> list:
             url, 
             headers=HEADERS, 
             params={"limit": int(limit), "offset": int(offset)},
-            timeout=10 # <<-- Aqui está o timeout correto
+            timeout=10 # Adiciona um limite de tempo de 10 segundos
         )
         
         if response.status_code != 200:
@@ -205,8 +204,8 @@ def handle_hooklab_report():
         return jsonify({"status": "error", "message": f"Erro interno do servidor: {str(e)}"}), 500
 
 
-# --- 4. INICIALIZAÇÃO DO SERVIDOR ---
+# --- 4. INICIALIZAÇÃO DO SERVIDOR (APENAS PARA TESTE LOCAL) ---
 if __name__ == "__main__":
     print("Iniciando servidor Flask. Aguardando chamadas POST na rota /hooklab/report")
-    # Use host='0.0.0.0' para que o servidor seja acessível externamente (necessário para o deploy)
+    # O Gunicorn (no Render) IGNORA este bloco, ele é só para teste no seu PC.
     app.run(host='0.0.0.0', port=5000, debug=True)
